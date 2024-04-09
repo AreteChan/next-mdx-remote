@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "../components/Header";
+import { AntdRegistry } from '@ant-design/nextjs-registry';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,12 +16,19 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Header />
-        {children}
+        <AntdRegistry>
+          <Header />
+          <main style={{ height: 'calc(100vh - 56px)'}}>
+            {children}
+          </main>
+        </AntdRegistry>
       </body>
     </html>
   );
 }
+

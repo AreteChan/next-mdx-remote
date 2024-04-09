@@ -10,29 +10,27 @@ const SignupPage = () => {
 
   const signup = async (formdata: FormData) => {
     try {
-      if (formdata.get('password') !== formdata.get('confirmPassword')) {
-        message.error('Passwords do not match')
-        return
-      }
-      const user = await createUser(formdata)  
+      const { password, confirmPassword } = Object.fromEntries(formdata)
+      if (password !== confirmPassword) message.error('Passwords do not match!')
       
+      const user = await createUser(formdata)  
+      message.success('Sign up successfully!')
     } catch (error: any) {
-      message.error(`Sign up failed. Please try again.`)
-      console.error(error)
+      message.error(`Sign up failed! ${error.message}`)
     }
   }
 
   return (
-    <div className="flex-center flex-col h-full px-96 pt-24">
+    <div className="flex items-center flex-col h-full px-96 pt-[7%]">
       <h1>Sign up</h1>
-      <form action={signup} className='w-96 flex-center flex-col'>
-        <Input name="name" type="text" placeholder="Name" className='w-80 mb-4'/>
-        <Input name="email" type="email" placeholder="Email" className='w-80 mb-4'/>
-        <Input name="password" type="password" placeholder="Password" className='w-80 mb-4'/>
-        <Input name="confirmPassword" type="password" placeholder="Confirm Password" className='w-80 mb-4'/>
-        <Button type="submit" variant="secondary" className='w-80 mb-4'>Submit</Button>
+      <form action={signup} className='w-80 flex-center flex-col gap-4'>
+        <Input name="name" type="text" placeholder="Name" />
+        <Input name="email"  placeholder="Email" />
+        <Input name="password" type="password" placeholder="Password" />
+        <Input name="confirmPassword" type="password" placeholder="Confirm Password" />
+        <Button type="submit" variant="secondary" className='w-80'>Submit</Button>
       </form>
-      <p>Already have an account? <Link href="/login" className='text-sky-600'>Log In</Link> </p>
+      <p className='my-2'>Already have an account? <Link href="/login" className='text-sky-600'>Log In</Link> </p>
     </div>
   )
 }

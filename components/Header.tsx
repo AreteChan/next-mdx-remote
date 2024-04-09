@@ -14,19 +14,19 @@ const Header = () => {
   }
 
   return (
-    <header className='flex justify-between items-center py-2 px-4 '>
-      <div>
+    <header className='sticky w-full'>
+      <div className='flex justify-between items-center py-2 px-4 '>
         <Button variant="link" size='icon' onClick={toggleDark}>
           {theme === 'light' ? <SunDim size={24} /> : <MoonStars size={24} />}
         </Button>
-      </div>
-      <div>
-        <Button variant="link">
-          <Link href='/'>Home</Link>
-        </Button>
-        <Button variant="link">
-          <Link href='/login'>Log in</Link>
-        </Button>
+        <div>
+          <Button variant="link">
+            <Link href='/'>Home</Link>
+          </Button>
+          <Button variant="link">
+            <Link href='/login'>Log in</Link>
+          </Button>
+        </div>
       </div>
     </header>
   )
