@@ -1,10 +1,10 @@
 "use client"
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { message } from 'antd'
+import { message } from '@/components/ui/message'
 import Link from 'next/link'
-import React from 'react'
 import { createUser } from '@/lib/actions'
+import { sriracha } from '@/app/font'
 
 const SignupPage = () => {
 
@@ -22,7 +22,7 @@ const SignupPage = () => {
 
   return (
     <div className="flex items-center flex-col h-full px-96 pt-[7%]">
-      <h1>Sign up</h1>
+      <h1 className={sriracha.className}>Sign up</h1>
       <form action={signup} className='w-80 flex-center flex-col gap-4'>
         <Input name="name" type="text" placeholder="Name" />
         <Input name="email"  placeholder="Email" />

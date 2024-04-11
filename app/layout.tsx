@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { inter }  from "@/app/font";
 import "./globals.css";
 import Header from "../components/Header";
-import { AntdRegistry } from '@ant-design/nextjs-registry';
-
-const inter = Inter({ subsets: ["latin"] });
+import { MessageContainer } from "@/components/ui/message";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -21,12 +19,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <AntdRegistry>
-          <Header />
-          <main style={{ height: 'calc(100vh - 56px)'}}>
-            {children}
-          </main>
-        </AntdRegistry>
+        <MessageContainer />
+        <Header />
+        <main style={{ height: 'calc(100vh - 56px)'}}>
+          {children}
+        </main>
       </body>
     </html>
   );

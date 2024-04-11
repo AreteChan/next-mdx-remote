@@ -2,9 +2,9 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import Link from 'next/link'
-import React from 'react'
 import { getUser } from '@/lib/actions'
-import { message } from 'antd'
+import { message } from '@/components/ui/message'
+import { sriracha } from '@/app/font'
 
 const LoginPage = () => {
 
@@ -19,7 +19,7 @@ const LoginPage = () => {
 
   return (
     <div className="flex items-center flex-col h-full px-96 pt-[7%]">
-      <h1>Log in</h1>
+      <h1 className={sriracha.className}>Log in</h1>
       <form action={login} className='w-96 flex-center flex-col'>
         <Input name="email" type="email" placeholder="Email" className='w-80 mb-4'/>
         <Input name="password" type="password" placeholder="Password" className='w-80 mb-4'/>
