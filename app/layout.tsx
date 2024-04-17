@@ -21,7 +21,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <MessageContainer />
         <Header />
-        <main style={{ height: 'calc(100vh - 56px)'}}>
+        <main className="mt-4" style={{ height: 'calc(100vh - 56px)'}}>
           {children}
         </main>
       </body>

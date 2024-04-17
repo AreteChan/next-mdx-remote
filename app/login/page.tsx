@@ -18,14 +18,14 @@ const LoginPage = () => {
   }
 
   return (
-    <div className="flex items-center flex-col h-full px-96 pt-[7%]">
+    <div className="flex items-center flex-col px-96 pt-[7%] anima-in">
       <h1 className={sriracha.className}>Log in</h1>
-      <form action={login} className='w-96 flex-center flex-col'>
-        <Input name="email" type="email" placeholder="Email" className='w-80 mb-4'/>
-        <Input name="password" type="password" placeholder="Password" className='w-80 mb-4'/>
-        <Button type="submit" variant="secondary" className='w-80 mb-4'>Submit</Button>
+      <form action={login} className='w-80 space-y-4'>
+        <Input name="email" type="email" placeholder="Email"/>
+        <Input name="password" type="password" placeholder="Password"/>
+        <Button type="submit" variant="secondary" className='w-80'>Submit</Button>
       </form>
-      <p>Don&apos;t have an account? <Link href="/signup" className='text-sky-600'>Sign up</Link> </p>
+      <p className='my-2'>Don&apos;t have an account? <Link href="/signup" className='text-sky-600'>Sign up</Link> </p>
     </div>
   )
 }

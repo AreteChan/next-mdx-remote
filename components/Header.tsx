@@ -1,16 +1,29 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from './ui/button'
 import Link from 'next/link';
 import { SunDim, MoonStars } from '@phosphor-icons/react/dist/ssr';
 
 const Header = () => {
-
   const [theme, setTheme] = useState('light')
 
+  useEffect(() => {
+    const theme = localStorage.getItem('theme')
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark')
+      document.documentElement.dataset.theme = 'dark'
+      setTheme(theme)
+    }
+  }, [])
+
   const toggleDark = () => {
+    const isLight = theme === 'light'
     document.documentElement.classList.toggle('dark')
-    theme === 'light' ? setTheme('dark') : setTheme('light')
+    if (isLight) {
+      document.documentElement.dataset.theme = 'dark'
+      localStorage.setItem('theme', 'dark')
+      setTheme('dark')
+    }
   }
 
   return (
@@ -22,6 +35,12 @@ const Header = () => {
         <div>
           <Button variant="link">
             <Link href='/'>Home</Link>
+          </Button>
+          <Button variant="link">
+            <Link href='/blog'>Blog</Link>
+          </Button>
+          <Button variant="link">
+            <Link href='/post'>Post</Link>
           </Button>
           <Button variant="link">
             <Link href='/login'>Log in</Link>

@@ -21,9 +21,9 @@ const SignupPage = () => {
   }
 
   return (
-    <div className="flex items-center flex-col h-full px-96 pt-[7%]">
+    <div className="flex items-center flex-col px-96 pt-[7%] anima-in">
       <h1 className={sriracha.className}>Sign up</h1>
-      <form action={signup} className='w-80 flex-center flex-col gap-4'>
+      <form action={signup} className='w-80 space-y-4'>
         <Input name="name" type="text" placeholder="Name" />
         <Input name="email"  placeholder="Email" />
         <Input name="password" type="password" placeholder="Password" />

@@ -1,0 +1,33 @@
+import MdxLayout from '@/components/MdxLayout'
+
+export const metadata = {
+	title: "My first blog",
+	description: "An awesome blog post about important stuff",
+};
+
+# Welcome to my MDX page!
+ 
+This is some **bold** and _italics_ text.
+ 
+This is a list in markdown:
+ 
+- One
+- Two
+- Three
+
+1. One
+2. Two
+3. Three
+
+This is a link to [my blog](/blog).
+
+
+```js
+console.log('Hello, world!')
+```
+
+
+
+export default function MDXPage({ children }) {
+  return <MdxLayout>{children}</MdxLayout>
+}

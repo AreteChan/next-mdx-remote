@@ -36,52 +36,61 @@
     --radius: 0.5rem;
   }
 
+  /* 2017 Dark (Visual Studio - C/C++) */
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --background: 0 0% 12%;
+    --foreground: 0 0% 83%;
+    --muted: 0 12% 16%;
+    --muted-foreground: 0 12% 66%;
+    --popover: 0 0% 9%;
+    --popover-foreground: 0 0% 93%;
+    --card: 0 0% 10%;
+    --card-foreground: 0 0% 88%;
+    --border: 0 0% 17%;
+    --input: 0 0% 20%;
+    --primary: 0 0% 100%;
+    --primary-foreground: 0 0% 20%;
+    --secondary: 0 0% 25%;
+    --secondary-foreground: 0 0% 85%;
+    --accent: 0 0% 27%;
+    --accent-foreground: 0 0% 87%;
+    --destructive: 3 85% 48%;
+    --destructive-foreground: 0 0% 100%;
+    --ring: 0 0% 100%;
   }
 }
 
 @layer base {
   * {
     @apply border-border;
+    transition: all 0.3s linear;
   }
   body {
     @apply bg-background text-foreground h-[100vh];
   }
   h1 {
-    @apply text-4xl font-bold m-4
+    @apply text-4xl font-bold my-4;
   }
   h2 {
-    @apply text-3xl font-bold;
+    @apply text-3xl font-bold my-2;
   }
   h3 {
-    @apply text-2xl font-bold;
+    @apply text-2xl font-bold my-1;
+  }
+  h4 {
+    @apply text-xl font-bold;
+  }
+  h5 {
+    @apply text-lg font-bold;
+  }
+  h6 {
+    @apply text-base font-bold;
+  }
+  ul {
+    @apply list-disc list-inside;
+  }
+  ol {
+    @apply list-decimal list-inside;
   }
 }
 
@@ -89,5 +98,28 @@
   .flex-center {
     @apply flex items-center justify-center;
   }
+  .anima-in {
+    @apply animate-in slide-in-from-bottom-10 fade-in duration-700
+  }
 }
 
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--secondary));
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
