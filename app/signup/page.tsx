@@ -21,7 +21,7 @@ const SignupPage = () => {
   }
 
   return (
-    <div className="flex items-center flex-col px-96 pt-[7%] anima-in">
+    <div className="container flex items-center flex-col pt-[7%] slide-enter-content">
       <h1 className={sriracha.className}>Sign up</h1>
       <form action={signup} className='w-80 space-y-4'>
         <Input name="name" type="text" placeholder="Name" />

@@ -6,8 +6,7 @@ import { getUser } from '@/lib/actions'
 import { message } from '@/components/ui/message'
 import { sriracha } from '@/app/font'
 
-const LoginPage = () => {
-
+function LoginPage() {
   const login = async (formdata: FormData) => {
     try {
       const user = await getUser(formdata)
@@ -18,7 +17,7 @@ const LoginPage = () => {
   }
 
   return (
-    <div className="flex items-center flex-col px-96 pt-[7%] anima-in">
+    <div className="container flex items-center flex-col pt-[7%] slide-enter-content">
       <h1 className={sriracha.className}>Log in</h1>
       <form action={login} className='w-80 space-y-4'>
         <Input name="email" type="email" placeholder="Email"/>

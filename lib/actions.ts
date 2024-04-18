@@ -1,6 +1,7 @@
 "use server"
 import User from '@/Models/User'
 import { connectDB } from '@/lib/utils'
+import { cookies } from "next/headers";
 
 connectDB();
 
@@ -55,5 +56,8 @@ export const createUser = async (formdata: FormData) => {
   } else {
     throw new Error('Please check your email and password!')
   }
-  
+}
+
+export const setCookiesTheme = (theme: string) => {
+  cookies().set("theme", theme)
 }

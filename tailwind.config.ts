@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss"
+const plugin = require('tailwindcss/plugin')
 
 const config = {
   darkMode: ["class"],
@@ -72,11 +73,24 @@ const config = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      typography: {
+        DEFAULT: {
+          css: {
+            maxWidth: '85ch', 
+          },
+        }
+      }
     },
   },
   plugins: [
     require("tailwindcss-animate"),
     require('@tailwindcss/typography'),
+    plugin(function ({addVariant}: {addVariant: any}) {
+      addVariant( 
+        'prose-inline-code',
+        '&.prose :where(:not(pre)>code):not(:where([class~="not-prose"] *))'
+      );
+    })
   ],
 } satisfies Config
 

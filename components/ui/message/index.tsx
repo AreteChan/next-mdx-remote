@@ -18,7 +18,6 @@ type wrapperRefCurrent = {
 }
 
 const Message = forwardRef(({ message, type }: MessageObj, ref) => {
-
   return (
     <div 
       className={s.message}>
@@ -70,7 +69,6 @@ const MessageWrapper = forwardRef((props, ref) => {
         )}
     </div>
   )
-    
 })
 MessageWrapper.displayName = 'MessageWrapper'
 
@@ -102,7 +100,6 @@ export function MessageContainer() {
 
 function msgList(message: string, type: 'success' | 'error') {
   const wrapperRefCurrent = wrapperRef.current as wrapperRefCurrent
-  // console.log(wrapperRefCurrent)
   wrapperRefCurrent.add(message, type)
   setTimeout(() => {
     wrapperRefCurrent.addFadeOut()

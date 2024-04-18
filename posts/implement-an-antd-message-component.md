@@ -1,7 +1,140 @@
 ---
-title: My First Post
-date: 2021-07-06T16:31:45+08:00
-description: An awesome blog post about important stuff
+title: 复刻一个antd message组件
+date: 2024-04-18T16:31:45+08:00
+description: 复刻一个antd message组件。Implement an antd message component.
+keywords: [message, React, Next.js, CSS, useImperativeHandlen, transition, animation]
 ---
 
-This is my first post ...
+最近在学习 Next.js，组件库使用 shadcn，但没有类似于 antd 的 message 提示框组件，于是乎自己实现一个。
+
+message 组件通过 `message.success` 或 `message.error` 静态方法调用，传入一个参数 message，弹出一个小型提示框显示 message，3秒后自动消失。[点击查看 Demo 演示](/demo/message-component)。
+
+```tsx
+export const message = {
+  success: (message: string) => msgList(message, 'success'),
+  error: (message: string) => msgList(message, 'error')
+}
+```
+
+antd message 无需导入组件，直接调用静态方法即可使用，这可以通过操作 React DOM 实现。但在 Next.js 中，组件默认在服务端渲染，无法获取 document 对象，所以还是需要用户手动导入并挂载组件。
+
+```tsx
+// 导出一个 MessageContainer 组件，用于挂载提示框
+const wrapperRef = createRef<wrapperRefCurrent>()
+export function MessageContainer() {
+  return <MessageWrapper ref={wrapperRef} />
+}
+```
+
+直接调用静态方法要求在组件外操作组件内的数据。MessageWrapper 组件包裹了一个或多个提示框组件 Message，通过 `useState` 定义了状态 `msgList: MessageObj[]`, MessageObj 记录了 Message 组件所需数据，数据结构如下：
+
+```tsx
+type MessageObj = {
+  message: string
+  type: 'success' | 'error'
+  key: number
+}
+```
+
+不妨思考一下实际使用场景：用户点击按钮，调用 `message.success` 方法，向 MessageWrapper 组件的 msgList 添加一个 msg ，然后渲染提示框。要实现这一需求，即要求**在组件外操作组件内的数据**，这可以通过 `useImperativeHandle` 和 `forwardRef` 配合实现。
+
+## useImperativeHandle 实现组件外操作组件内的数据
+上面代码将 wrapperRef 传入 MessageWrapper，MessageWrapper 内使用了 useImperativeHandle 和 forwardRef ，wrapperRef.current 将是 useImperativeHandle 内回调函数返回的对象。
+
+useImperativeHandle 回调函数返回一个对象，对象内定义了三个方法。
+- **add**：向 msgList 添加一个 msg，key 使用 Math.random() 生成，作为 msg 的标识。
+- **addFadeOut**：修改提示框样式的 transform 和 opacity 属性，触发 transition 动画，提示框向上移动并逐渐消失。
+- **remove**：移除 msgList 中第一个 msg。
+
+```tsx
+// MessageWrapper组件的部分代码
+const Message = forwardRef(({ message, type }: MessageObj, ref) => {
+  const [msgList, setMsgList] = useState<MessageObj[]>([])
+  const msgListRef = useRef<HTMLDivElement | null>(null)
+
+  useImperativeHandle(ref, () => ({
+    add(message: string, type: 'success' | 'error') {
+      setMsgList((prev) => [...prev, { message, type, key: Math.random()}]);
+    },
+    addFadeOut() {
+      const msgDiv = msgListRef.current!.children[0] as HTMLDivElement
+      msgDiv.style.transform = 'translateY(var(--start-height)) translateX(-50%)'
+      msgDiv.style.opacity = '0'
+    },
+    remove() {
+      setMsgList((prev) => prev.slice(1))
+    }
+  }), []); 
+
+  return (
+    <div className="fixed top-0 p-4 w-full" ref={msgListRef}>
+      { msgList.map((msg) => 
+        <Message key={msg.key} message={msg.message} type={msg.type}/>
+      )}
+    </div>
+  )
+})
+```
+这三个方法将挂载到 wrapperRef.current 上，add 在提示框出现前调用，addFadeOut 在提示框出现后 2.7 秒调用，remove 在提示框出现后 3 秒调用。具体的动画细节与实现请看后文。
+  
+```tsx
+function msgList(message: string, type: 'success' | 'error') {
+  const wrapperRefCurrent = wrapperRef.current as wrapperRefCurrent
+  wrapperRefCurrent.add(message, type)
+  setTimeout(() => {
+    wrapperRefCurrent.addFadeOut()
+  }, 2700);
+  setTimeout(() => {
+    wrapperRefCurrent.remove()
+  }, 3000);
+}
+```
+## 动画实现
+弹出多个提示框时，提示框不会重叠，而是依次向下排列。最先的提示框消失时，后续的提示框集体向上移动。具体请看 [Demo 演示](/demo/message-component)。
+
+CSS 动画主要有两种方式，`transition` 或者 `animation`。起初我使用 animation 固定入场动画，trantision 动态实现退场动画，但 animation 有可能覆盖 transition，最后决定统一使用 transition 实现。
+
+Message 组件使用 `position: absolute` 来定位，`left: 50%` 配合 `translateX(-50%)` 居中，`translateY` 内传入一个变量控制 Y 轴偏移，初始值为 `var(--start-height)`。
+transition 简写语法接受 4 个参数，分别为 transition-property、transition-duration、transition-timing-function 和 transition-delay。
+
+```css
+.message {
+  @apply absolute left-1/2 flex items-center justify-center gap-2
+  bg-white py-2 px-3 rounded-lg text-center z-[999] whitespace-nowrap;
+  box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08),
+  0 3px 6px -4px rgba(0, 0, 0, 0.12),
+  0 9px 28px 8px rgba(0, 0, 0, 0.05);
+  transform: translateX(-50%) translateY(var(--start-height));
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+}
+```
+message 提示框将显示3秒，动画流程大致如下：
+1. 0s ~ 0.3s，播放入场动画，opacity 从 0 到 1，并向下偏移 2rem。
+2. 0.3s ~ 2.7s，期间若有提示框消失，将相应向上偏移。
+3. 2.7s ~ 3s，播放退场动画，opacity 从 1 到 0，并向上偏移 2rem。
+
+实际情况可能会更复杂，譬如在上一个 message 退场时新的 message 入场，此处不多赘述。
+
+实现思路是在 MessageWarpper 组件内 useEffect 监听 msgList 变化，根据 msg 在 msgList 内的索引传入不同的 Y 轴偏移量。通过 Ref 拿到子元素 DOM，通过 style 传入 CSS 变量 `--start-height` 和 `--height`，setTimeout 异步修改 Message 的 transform 和 opacity 样式（若同步修改，Y 轴偏移量初始值将直接为 --height，没有入场动画效果）。**每次 transform 变化时，transition 过渡动画就会触发**。
+```tsx
+// MessageWarpper 组件内 useEffect
+  useEffect(() => {
+    for (let i = 0; i < msgListRef.current!.children.length; i++) {
+      let h = i*3.2
+      let msgDiv = msgListRef.current!.children[i] as HTMLDivElement
+      msgDiv.style.setProperty('--start-height', `${h-2}rem`)
+      msgDiv.style.setProperty('--height', `${h}rem`)
+      setTimeout(() => {
+        msgDiv.style.transform=`translateY(${h}rem) translateX(-50%)`
+        msgDiv.style.opacity = '1'
+      }, 0);
+    }
+  }, [msgList])
+```
+## 总结
+- 在 Next.js 中，组件默认在服务端渲染，无法使用浏览器 API 如 window、document、localstorge 等。若想访问浏览器 API，需要 `'use client'` 指明客户端组件，并将访问浏览器 API 的代码放入如 `useEffect` 等仅客户端能调用的特定位置中。
+
+- **useImperativeHandle** 可以实现在组件外操作组件内的数据，如 setState、操作 Ref 等。
+
+- **transition** 简写语法接受 4 个参数，分别为 transition-property、transition-duration、transition-timing-function 和 transition-delay。transition-property 指定哪些属性使用过渡。**transition-property 取值变化时会触发 transition 动画**。

@@ -86,21 +86,25 @@
   h6 {
     @apply text-base font-bold;
   }
-  ul {
-    @apply list-disc list-inside;
-  }
-  ol {
-    @apply list-decimal list-inside;
-  }
 }
 
 @layer utilities {
   .flex-center {
     @apply flex items-center justify-center;
   }
-  .anima-in {
-    @apply animate-in slide-in-from-bottom-10 fade-in duration-700
+  .anima-in > * {
+    @apply animate-in slide-in-from-bottom-10 fade-in duration-700 
   }
+  .prose-inline-code {
+    @apply pic:rounded pic:bg-gray-300 pic:dark:bg-gray-600 pic:py-1 pic:px-1
+    pic:before:content-none pic:after:content-none
+  }
+}
+/* inline code */
+.prose :where(:not(pre)>code):not(:where([class~="not-prose"] *)) {
+  @apply rounded bg-gray-200 dark:bg-gray-700 py-1 px-2 
+  before:content-none after:content-none
+  font-medium 
 }
 
 /* width */
@@ -122,4 +126,91 @@
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+@keyframes slide-enter {
+  0% {
+    transform: translateY(2rem);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html:not(.no-sliding) [slide-enter],
+  html:not(.no-sliding) .slide-enter,
+  html:not(.no-sliding) .slide-enter-content > *:not(:has(.table-of-contents)) {
+    --enter-stage: 0;
+    --enter-step: 90ms;
+    --enter-initial: 0ms;
+    animation: slide-enter 1s both 1;
+    animation-delay: calc(
+      var(--enter-initial) + var(--enter-stage) * var(--enter-step)
+    );
+  }
+
+  .slide-enter-content > *:nth-child(1) {
+    --enter-stage: 1 !important;
+  }
+  .slide-enter-content > *:nth-child(2) {
+    --enter-stage: 2 !important;
+  }
+  .slide-enter-content > *:nth-child(3) {
+    --enter-stage: 3 !important;
+  }
+  .slide-enter-content > *:nth-child(4) {
+    --enter-stage: 4 !important;
+  }
+  .slide-enter-content > *:nth-child(5) {
+    --enter-stage: 5 !important;
+  }
+  .slide-enter-content > *:nth-child(6) {
+    --enter-stage: 6 !important;
+  }
+  .slide-enter-content > *:nth-child(7) {
+    --enter-stage: 7 !important;
+  }
+  .slide-enter-content > *:nth-child(8) {
+    --enter-stage: 8 !important;
+  }
+  .slide-enter-content > *:nth-child(9) {
+    --enter-stage: 9 !important;
+  }
+  .slide-enter-content > *:nth-child(10) {
+    --enter-stage: 10 !important;
+  }
+  .slide-enter-content > *:nth-child(11) {
+    --enter-stage: 11 !important;
+  }
+  .slide-enter-content > *:nth-child(12) {
+    --enter-stage: 12 !important;
+  }
+  .slide-enter-content > *:nth-child(13) {
+    --enter-stage: 13 !important;
+  }
+  .slide-enter-content > *:nth-child(14) {
+    --enter-stage: 14 !important;
+  }
+  .slide-enter-content > *:nth-child(15) {
+    --enter-stage: 15 !important;
+  }
+  .slide-enter-content > *:nth-child(16) {
+    --enter-stage: 16 !important;
+  }
+  .slide-enter-content > *:nth-child(17) {
+    --enter-stage: 17 !important;
+  }
+  .slide-enter-content > *:nth-child(18) {
+    --enter-stage: 18 !important;
+  }
+  .slide-enter-content > *:nth-child(19) {
+    --enter-stage: 19 !important;
+  }
+  .slide-enter-content > *:nth-child(20) {
+    --enter-stage: 20 !important;
+  }
 }

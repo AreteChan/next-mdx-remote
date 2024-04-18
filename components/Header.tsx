@@ -1,33 +1,31 @@
 'use client'
-import { useEffect, useState } from 'react'
 import { Button } from './ui/button'
 import Link from 'next/link';
 import { SunDim, MoonStars } from '@phosphor-icons/react/dist/ssr';
+import { useEffect, useState } from 'react';
 
-const Header = () => {
+function Header() {
+
   const [theme, setTheme] = useState('light')
-
+  
   useEffect(() => {
     const theme = localStorage.getItem('theme')
     if (theme === 'dark') {
       document.documentElement.classList.add('dark')
-      document.documentElement.dataset.theme = 'dark'
-      setTheme(theme)
-    }
+      localStorage.setItem('theme', 'dark')
+      setTheme('dark')
+    } 
   }, [])
 
   const toggleDark = () => {
     const isLight = theme === 'light'
     document.documentElement.classList.toggle('dark')
-    if (isLight) {
-      document.documentElement.dataset.theme = 'dark'
-      localStorage.setItem('theme', 'dark')
-      setTheme('dark')
-    }
+    localStorage.setItem('theme', isLight ? 'dark' : 'light')
+    setTheme(isLight ? 'dark' : 'light')
   }
 
   return (
-    <header className='sticky w-full'>
+    <header className='fixed top-0 w-full z-50'>
       <div className='flex justify-between items-center py-2 px-4 '>
         <Button variant="link" size='icon' onClick={toggleDark}>
           {theme === 'light' ? <SunDim size={24} /> : <MoonStars size={24} />}
@@ -47,7 +45,7 @@ const Header = () => {
           </Button>
         </div>
       </div>
-    </header>
+    </header> 
   )
 }
 

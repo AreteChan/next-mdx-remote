@@ -1,7 +1,8 @@
-import { MDXRemote } from "next-mdx-remote/rsc";
-
+import { MDXRemote, MDXRemoteProps } from "next-mdx-remote/rsc";
 import { getPostBySlug, getAllPosts } from "@/lib/parse-posts";
 import { Metadata } from "next";
+import remarkGfm from 'remark-gfm'
+import rehypeHighlight from 'rehype-highlight'
 
 type Props = {
   params: { slug: string };
@@ -9,38 +10,50 @@ type Props = {
 };
 
 // 根据 slug 获取文章内容
-async function getPost(params: Props["params"]) {
+function getPost(params: Props["params"]) {
   const post = getPostBySlug(params.slug);
   return post;
 }
 
+// 禁止动态路由
 export const dynamicParams = false;
 
-// 获取所有文章的 slug 数组
-export async function generateStaticParams() {
+// 生成静态路由参数
+export function generateStaticParams() {
   const posts = getAllPosts();
   return posts.map((post) => ({ slug: post.slug }));
 }
 
 // 生成文章的元数据
-export async function generateMetadata( { params, searchParams }: Props) {
-  const post = await getPost(params);
-  const metadata: Metadata = {
-    title: post.meta.title,
-    description: post.meta.description,
-  };
+export function generateMetadata( { params, searchParams }: Props) {
+  const post = getPost(params);
+  const metadata: Metadata = { ...post.meta };
   return metadata;
 }
 
+const options: MDXRemoteProps['options'] = {
+  mdxOptions: {
+    remarkPlugins: [remarkGfm],
+    rehypePlugins: [rehypeHighlight as any],
+  },
+};
 
-export default async function Post({ params }: Props) {
-  const post = await getPost(params);
+const components = {
+  pre: (props: any) => (
+    <pre {...props} className="hljs">
+      {props.children}
+    </pre>
+  ),
+}
+
+export default function Post({ params }: Props) {
+  const post = getPost(params);
 
   return (
-    <div className="container mt-4 prose dark:prose-invert anima-in">
-      <h2 className="text-5xl">{post.meta.title}</h2>
-      <time className="">{post.meta.date.toLocaleString()}</time>
-      <MDXRemote source={post.content} components={{}} options={{}} />
+    <div className="container mt-4 prose prose-slate dark:prose-invert slide-enter-content space-y-4 ">
+      <h1 className=" mb-4">{post.meta.title}</h1>
+      <div className="text-gray-400 mb-8">{post.meta.date.toLocaleString()}</div> 
+      <MDXRemote source={post.content} options={options} components={components}  />
     </div>
   );
 }

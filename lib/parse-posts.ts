@@ -22,14 +22,12 @@ export function getPostBySlug(slug: string) {
   const fileContents = fs.readFileSync(fullPath, "utf8");
 
   // 解析 markdown 元数据
-  const { data, content, excerpt } = matter(fileContents, {
-    excerpt: true,
-  });
+  const { data, content } = matter(fileContents);
 
   // 配置文章元数据
   const meta = { ...data } as MetaData;
 
-  return { slug: realSlug, meta, content, excerpt };
+  return { slug: realSlug, meta, content };
 }
 
 // 获取 /posts文件夹下所用markdown文档

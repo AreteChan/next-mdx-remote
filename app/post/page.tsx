@@ -3,14 +3,19 @@ import { getAllPosts } from "@/lib/parse-posts";
 import Link from 'next/link';
 
 
-const PostPage = () => {
+function PostPage() {
   const posts = getAllPosts();
   return (
-    <div className="container prose dark:prose-invert anima-in">
+    <div className="container prose dark:prose-invert slide-enter-content">
       { posts.map((post: any) => (
-        <Link key={post.slug} href={`/post/${post.slug}`}>
-          <h2>{post.meta.title}</h2>
-        </Link>
+        <div key={post.slug}>
+          <time className="text-xl mr-8">
+            {post.meta.date.toLocaleDateString()}
+          </time>
+          <Link href={`/post/${post.slug}`}>
+            <h1 className='inline-block text-3xl mt-4'>{post.meta.title}</h1>
+          </Link>
+        </div>
       ))}
       
     </div>
