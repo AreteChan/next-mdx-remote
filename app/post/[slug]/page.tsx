@@ -3,6 +3,8 @@ import { getPostBySlug, getAllPosts } from "@/lib/parse-posts";
 import { Metadata } from "next";
 import remarkGfm from 'remark-gfm'
 import rehypeHighlight from 'rehype-highlight'
+import { Button } from '@/components/ui/button';
+import ButtonDemo from "@/app/demo/message-component/ButtonDemo";
 
 type Props = {
   params: { slug: string };
@@ -31,6 +33,7 @@ export function generateMetadata( { params, searchParams }: Props) {
   return metadata;
 }
 
+// MDX 配置
 const options: MDXRemoteProps['options'] = {
   mdxOptions: {
     remarkPlugins: [remarkGfm],
@@ -38,12 +41,13 @@ const options: MDXRemoteProps['options'] = {
   },
 };
 
-const components = {
+const components: MDXRemoteProps['components'] = {
   pre: (props: any) => (
     <pre {...props} className="hljs">
       {props.children}
     </pre>
   ),
+  ButtonDemo,
 }
 
 export default function Post({ params }: Props) {
@@ -51,7 +55,7 @@ export default function Post({ params }: Props) {
 
   return (
     <div className="container mt-4 prose prose-slate dark:prose-invert slide-enter-content space-y-4 ">
-      <h1 className=" mb-4">{post.meta.title}</h1>
+      <h1 className="mb-4">{post.meta.title}</h1>
       <div className="text-gray-400 mb-8">{post.meta.date.toLocaleString()}</div> 
       <MDXRemote source={post.content} options={options} components={components}  />
     </div>

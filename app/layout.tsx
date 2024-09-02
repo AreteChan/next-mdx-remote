@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="zh-CN">
       <body className={inter.className}>
-        {/* <MessageContainer /> */}
+        <MessageContainer />
         <Header />
         <main className="py-16">
           {children}

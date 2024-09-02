@@ -5,9 +5,10 @@ description: 复刻一个antd message组件。Implement an antd message componen
 keywords: [message, React, Next.js, CSS, useImperativeHandlen, transition, animation]
 ---
 
+
 最近在学习 Next.js，组件库使用 shadcn，但没有类似于 antd 的 message 提示框组件，于是乎自己实现一个。
 
-message 组件通过 `message.success` 或 `message.error` 静态方法调用，传入一个参数 message，弹出一个小型提示框显示 message，3秒后自动消失。[点击查看 Demo 演示](/demo/message-component)。
+message 组件通过 `message.success` 或 `message.error` 静态方法调用，传入一个参数 message，弹出一个小型提示框显示 message，3秒后自动消失。<ButtonDemo>点击演示</ButtonDemo>
 
 ```tsx
 export const message = {
@@ -90,7 +91,7 @@ function msgList(message: string, type: 'success' | 'error') {
 }
 ```
 ## 动画实现
-弹出多个提示框时，提示框不会重叠，而是依次向下排列。最先的提示框消失时，后续的提示框集体向上移动。具体请看 [Demo 演示](/demo/message-component)。
+弹出多个提示框时，提示框不会重叠，而是依次向下排列。最先的提示框消失时，后续的提示框集体向上移动。具体请点击查看。<ButtonDemo>点击演示</ButtonDemo>
 
 CSS 动画主要有两种方式，`transition` 或者 `animation`。起初我使用 animation 固定入场动画，trantision 动态实现退场动画，但 animation 有可能覆盖 transition，最后决定统一使用 transition 实现。
 

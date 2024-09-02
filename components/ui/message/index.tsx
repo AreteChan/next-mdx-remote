@@ -63,7 +63,7 @@ const MessageWrapper = forwardRef((props, ref) => {
   }, [msgList])
 
   return (
-    <div className="fixed top-0 p-4 w-full" ref={msgListRef}>
+    <div className="fixed top-0 p-4 w-full z-50" ref={msgListRef}>
         { msgList.map((msg) => 
             <Message key={msg.key} message={msg.message} type={msg.type}/>
         )}
@@ -89,7 +89,7 @@ MessageWrapper.displayName = 'MessageWrapper'
 // }
 
 const wrapperRef = createRef<wrapperRefCurrent>()
-export function MessageContainer() {
+function MessageContainer() {
   return <MessageWrapper ref={wrapperRef} />
 }
 
@@ -109,7 +109,9 @@ function msgList(message: string, type: 'success' | 'error') {
   }, 3000);
 }
 
-export const message = {
+const message = {
   success: (message: string) => msgList(message, 'success'),
   error: (message: string) => msgList(message, 'error')
 }
+
+export { MessageContainer, message }
