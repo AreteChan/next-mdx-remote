@@ -1,5 +1,5 @@
 "use server"
-import User from '@/Models/User'
+import User from '@/models/User'
 import { connectDB } from '@/lib/utils'
 import { cookies } from "next/headers";
 
@@ -14,7 +14,7 @@ type User = {
 export const getUser = async (formdata: FormData) => {
   let user: User | null = null
   try {
-    const { email, password } = Object.fromEntries(formdata)
+    const { email, password } = Object.fromEntries(formdata) 
     user = await User.findOne({email, password})
   } catch (error: any) {
     console.error("💥Unexpected get user error!\n", error)
