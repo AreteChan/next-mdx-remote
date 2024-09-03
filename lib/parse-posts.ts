@@ -55,5 +55,3 @@ export function getMarkdownTitles(slug: string) {
   const titles = mdTextNoCode.match(titleRegex) || []; // match没有匹配返回null
   return titles;
 }
-
-console.log(getMarkdownTitles('implement-an-antd-message-component'));
