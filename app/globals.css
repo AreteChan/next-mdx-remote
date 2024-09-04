@@ -214,3 +214,7 @@
     --enter-stage: 20 !important;
   }
 }
+
+[id] {
+  scroll-margin-top: 20px; /* 调整为你需要的值 */
+}

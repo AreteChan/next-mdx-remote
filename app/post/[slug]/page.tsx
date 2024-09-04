@@ -65,17 +65,18 @@ export default function Post({ params }: Props) {
 
   return (
     <div className="container mt-4 flex">
-      <div id="post" className="prose prose-slate dark:prose-invert slide-enter-content ml-32 w-[85ch]">
+      <div id="post" className="prose prose-slate dark:prose-invert slide-enter-content ml-32 mr-8 w-[85ch]">
         <h1 className="mb-4">{post.meta.title}</h1>
         <div className="text-gray-400 mb-4">{post.meta.date.toLocaleString()}</div> 
         <MDXRemote source={post.content} options={options} components={components} />
-      </div>
+      </div >
       { isTitlesShow && 
-        <div>
-          <div className="slide-enter-content space-y-2 m-4 fixed">
+        <div id="menu">
+          <div className="slide-enter-content space-y-2 fixed">
+            <h4 className="mb-4">{post.meta.title}</h4>
             { titles.map((title: string) => {
               const pureTitle = title.replace(/^#{1,3}\s/, '');
-              let className = "block text-slate-500 hover:text-slate-900 whitespace-nowrap "
+              let className = "block text-slate-500 hover:text-slate-900 dark:text-slate-200 dark:hover:text-slate-400 whitespace-nowrap "
 
               if (title.startsWith("## ")) className += "ml-2";
               else if (title.startsWith("### ")) className += "ml-4";
