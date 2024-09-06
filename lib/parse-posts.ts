@@ -3,7 +3,7 @@ import { join } from "path";
 
 import matter from "gray-matter";
 const postsDir = join(process.cwd(), "posts"); // 项目启动路径@/posts
-const slugs = fs.readdirSync(postsDir); // 读取文件夹下所有文件名，返回String[]
+const slugs = fs.readdirSync(postsDir).filter((slug) => /\.mdx$/.test(slug)); // 读取文件夹下所有mdx文件名，返回String[]
 
 type MetaData = {
   title: string;
@@ -16,6 +16,7 @@ type MetaData = {
 
 // 根据文件名读取 markdown 文档内容
 export function getPostBySlug(slug: string) {
+    
   const realSlug = slug.replace(/\.mdx$/, "");
 
   const fullPath = join(postsDir, `${realSlug}.mdx`);
