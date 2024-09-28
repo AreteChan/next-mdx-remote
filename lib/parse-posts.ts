@@ -38,7 +38,7 @@ export function getAllPosts() {
   const posts = slugs
     .map((slug) => getPostBySlug(slug))
     // 排除草稿文件
-    .filter((post) => !/\.draft$/.test(post.slug));  // 匹配文件名中包含 .draft 的文件
+    .filter((post) => !/\.draft/.test(post.slug));  // 匹配文件名中包含 .draft 的文件
     // .filter((c) => !c.meta.draft);
   return posts.sort((a, b) => +b.meta.date - +a.meta.date);  // 根据日期排序
 }

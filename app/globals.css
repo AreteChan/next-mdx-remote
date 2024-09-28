@@ -4,7 +4,7 @@
 
 
 @layer base {
-  :root {
+  /* :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
@@ -33,6 +33,31 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
 
+    --radius: 0.5rem;
+  } */
+
+  /* 2017 Light (Visual Studio - C/C++) */
+  /* 修改了--primary-foreground */
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 0%;
+    --muted: 0 12% 90%;
+    --muted-foreground: 0 12% 30%;
+    --popover: 0 0% 97%;
+    --popover-foreground: 0 0% 0%;
+    --card: 0 0% 98%;
+    --card-foreground: 0 0% 0%;
+    --border: 0 0% 95%;
+    --input: 0 0% 92%;
+    --primary: 0 0% 17%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 0 0% 75%;
+    --secondary-foreground: 0 0% 15%;
+    --accent: 0 0% 85%;
+    --accent-foreground: 0 0% 25%;
+    --destructive: 5 94% 44%;
+    --destructive-foreground: 0 0% 100%;
+    --ring: 0 0% 17%;
     --radius: 0.5rem;
   }
 
@@ -110,6 +135,7 @@
 /* width */
 ::-webkit-scrollbar {
   width: 10px;
+  height: 8px;
 }
 
 /* Track */
@@ -123,9 +149,13 @@
   border-radius: 5px;
 }
 
+code::-webkit-scrollbar-thumb {
+  background: hsl(0 0% 25%); 
+}
+
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: hsl(0 0% 50%);
 }
 
 @keyframes slide-enter {
@@ -215,6 +245,7 @@
   }
 }
 
+/* 锚点跳转 */
 [id] {
-  scroll-margin-top: 20px; /* 调整为你需要的值 */
+  scroll-margin-top: 20px; 
 }

@@ -1,0 +1,134 @@
+---
+title: 解析 JavaScript 的 string.match() 与 regex.exec() 方法
+date: 2024-09-28T14:46:20+08:00
+description: 本文深入解析 JavaScript 中的 string.match() 和 regex.exec() 方法，比较两者的用法、返回值及应用场景，帮助开发者更有效地处理文本匹配与正则表达式。
+keywords: [JavaScript, string.match, regex.exec, 正则表达式, 匹配字符串, 方法解析]
+---
+
+***注**：出于简洁考虑，本文以 `string.match()` 表示 `String.prototype.match()`，以 `regex.exec()` 表示 `RegExp.prototype.exec()`。*
+
+### string.match() 与 regex.exec() 方法
+JavaScript 中使用正则表达式匹配文本字符串，主要用到 `string.match(re)` 和 `regex.exec(str)` 两种方法。
+- `string.match(re)` 传入一个正则表达式，返回一个数组，数组元素为匹配值，匹配失败返回 `null`。
+- `regex.exec(str)` 传入一个字符串，返回一个类数组对象，类数组对象的值为匹配值，匹配失败返回 `null`。
+
+```JavaScript
+// 匹配字符串中的数字
+let string = "Date: 2023-05-15";
+let regex = /\d+/g;
+
+console.log(string.match(regex));   // [ '2023', '05', '15' ]     
+console.log(regex.exec(string));    // [ '2023', index: 6, input: 'Date: 2023-05-15', groups: undefined ]
+console.log(regex.exec(string));    // [ '05', index: 11, input: 'Date: 2023-05-15', groups: undefined ]    
+console.log(regex.exec(string));    // [ '15', index: 14, input: 'Date: 2023-05-15', groups: undefined ]
+console.log(regex.exec(string));    // null
+```
+
+上述示例可看出 `string.match(re)` 和 `regex.exec(str)` 在输出上的区别：
+- 正则表达式 `/\d+/g` 使用了 `g` 全局匹配，表示允许匹配多次，而不是在找到第一个匹配后就停止。
+- `string.match(re)` 以**数组**形式直接返回所有匹配结果。
+- `regex.exec(str)` 以**类数组对象**形式返回一个匹配结果，并记住本次匹配终止处字符索引 `lastIndex` ，下次执行时将从 `lastIndex` 处开始匹配。
+
+### regex.exec(str) 的执行原理
+当正则表达式使用了表示全局检索的 `g` 或者粘性检索的 `y` 标志时， `lastIndex` 会起作用：
+- `lastIndex` 默认值为 0 ；
+- 每次调用 `exec()` 都会从 lastIndex 开始搜索；
+- 找到匹配后，`lastIndex` 更新为匹配结束的位置；
+- 如果没有找到匹配，`lastIndex` 重置为 0。
+
+```JavaScript
+let string = "Date: 2023-05-15";
+let regex = /\d+/g;
+
+console.log(regex.lastIndex);       // 0    
+console.log(regex.exec(string));    // [ '2023', index: 6, input: 'Date: 2023-05-15', groups: undefined ]
+console.log(regex.lastIndex);       // 10
+console.log(regex.exec(string));    // [ '05', index: 11, input: 'Date: 2023-05-15', groups: undefined ]    
+console.log(regex.lastIndex);       // 13
+console.log(regex.exec(string));    // [ '15', index: 14, input: 'Date: 2023-05-15', groups: undefined ]
+console.log(regex.lastIndex);       // 16
+console.log(regex.exec(string));    // null
+console.log(regex.lastIndex);       // 0
+```
+
+这就是 `regex.exec(str)` 执行的原理。
+
+然而聪明的小伙伴应该察觉出了问题：既然 `regex.exec(str)` 只返回一个结果，为什么要将返回值设置成类数组对象呢？
+实际上，`regex.exec(str)` 不仅仅返回一个匹配结果，还会返回多个**捕获结果**。
+
+### 正则表达式中的捕获
+捕获是用圆括号 `()` 括起来的正则表达式的一部分。它不仅匹配文本，还会记住匹配的内容。捕获语法如下：
+- 基本捕获：`(pattern)`
+- 命名捕获（ES2018+）：`(?<name>pattern)`
+
+`regex.exec(str)` 返回的第一个值是匹配结果。若存在捕获，还会接着返回多个捕获结果，命名捕获结果会写入 `groups` 属性中。
+
+```JavaScript
+let regex = /(?<year>\d{4})-(?<month>\d{2})-(\d{2})/;
+let string = "Date: 2023-05-15";
+
+console.log(regex.exec(string)); 
+// [
+//   '2023-05-15',
+//   '2023',
+//   '05',
+//   '15',
+//   index: 6,
+//   input: 'Date: 2023-05-15',
+//   groups: [Object: null prototype] { year: '2023', month: '05' }
+// ]
+```
+若在上述示例中执行 `string.match(re)`，会发现得到的结果和 `regex.exec(string)` 是一致的。
+```JavaScript
+console.log(string.match(regex)); 
+// [
+//   '2023-05-15',
+//   '2023',
+//   '05',
+//   '15',
+//   index: 6,
+//   input: 'Date: 2023-05-15',
+//   groups: [Object: null prototype] { year: '2023', month: '05' }
+// ]
+```
+实际上，`string.match(re)` 会根据正则表达式中是否有全局标志 `g` 而返回不同的结果：
+- 当有全局标志 `g` 时，`string.match(re)` 返回一个数组，数组元素为所有匹配值。
+- 当没有全局标志 `g` 时，`string.match(re)` 返回一个类数组对象，返回结果和 `regex.exec(str)` 一致。
+
+### string.match(re) 的执行原理 
+`string.match(re)` 本质上是以字符串为参数调用了 `RegExp.prototype[Symbol.match]` 方法。
+
+默认情况下，`RegExp.prototype[Symbol.match]` 方法的行为如下：
+
+- 如果正则表达式对象有全局标志 `g`，`Symbol.match` 方法会返回一个包含所有匹配结果的数组。
+- 如果没有全局标志 `g`，`Symbol.match` 方法会返回一个类数组对象，包含第一个匹配结果及其捕获组。
+
+以下示例创建了一个自定义正则子类，并重写了 [Symbol.match] 方法：
+```JavaScript
+class CustomRegExp extends RegExp {
+  [Symbol.match](str) {
+    const result = RegExp.prototype[Symbol.match].call(this, str);
+    if (result) {
+      return `Matched: ${result}`;
+    }
+    return null;
+  }
+}
+
+const regex = new CustomRegExp(/\d+/, "g");
+const string = 'Date: 2023-05-15';
+
+console.log(string.match(regex));  // Matched: 2023,05,15
+```
+
+### 总结
+1. `regex.exec(str)` 返回一个类数组对象，包含一个匹配值、多个捕获值、`index`、`input`、`groups` 等参数。
+2. 当正则表达式含有全局标志 `g` 时，`regex.exec(str)` 通过正则表达式的 `lastIndex` 属性记录当前匹配的起始位置，并在匹配结束后更新 `lastIndex`。
+3. 根据正则表达式是否有全局标志 `g`，`string.match(re)` 会返回不同的结果：
+- 当有全局标志 `g` 时，`string.match(re)` 返回一个数组，数组元素为所有匹配值。
+- 当没有全局标志 `g` 时，`string.match(re)` 返回一个类数组对象，返回结果和 `regex.exec(str)` 一致。
+4. `string.match(re)` 本质上是以字符串为参数调用了 `RegExp.prototype[Symbol.match]` 方法。
+
+### 参考链接
+1. https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/match
+2. https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/RegExp/exec
