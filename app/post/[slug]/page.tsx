@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import remarkGfm from 'remark-gfm'
 import rehypeHighlight from 'rehype-highlight'
 import ButtonDemo from '@/app/post-components/ButtonDemo';
+import TableOfContents from "@/components/TableOfContent";
 
 type Props = {
   params: { slug: string };
@@ -70,27 +71,9 @@ export default function Post({ params }: Props) {
         <div className="text-gray-400 mb-4">{post.meta.date.toLocaleString()}</div> 
         <MDXRemote source={post.content} options={options} components={components} />
       </div >
-      { isTitlesShow && 
-        <div id="menu">
-          <div className="slide-enter-content space-y-2 fixed mt-16">
-            {/* <h4 className="mb-4">{post.meta.title}</h4> */}
-            { titles.map((title: string) => {
-              const pureTitle = title.replace(/^#{1,3}\s/, '');
-              let className = "block text-slate-500 hover:text-slate-900 dark:text-slate-200 dark:hover:text-slate-400 whitespace-nowrap "
-
-              if (title.startsWith("## ")) className += "ml-2";
-              else if (title.startsWith("### ")) className += "ml-4";
-
-              return (
-                <a key={title} href={`#${pureTitle}`} 
-                  className={className} >
-                  {pureTitle}
-                </a>
-              )
-            })}
-          </div>
-        </div>
-      }
+      <div id="menu">
+        {isTitlesShow && <TableOfContents titles={titles} />}
+      </div>
       
     </div>
   );

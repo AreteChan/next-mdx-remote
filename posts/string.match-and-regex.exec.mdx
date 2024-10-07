@@ -95,7 +95,7 @@ console.log(string.match(regex));
 - 当有全局标志 `g` 时，`string.match(re)` 返回一个数组，数组元素为所有匹配值。
 - 当没有全局标志 `g` 时，`string.match(re)` 返回一个类数组对象，返回结果和 `regex.exec(str)` 一致。
 
-### string.match(re) 的执行原理 
+### string.match(re) 的执行原理
 `string.match(re)` 本质上是以字符串为参数调用了 `RegExp.prototype[Symbol.match]` 方法。
 
 默认情况下，`RegExp.prototype[Symbol.match]` 方法的行为如下：

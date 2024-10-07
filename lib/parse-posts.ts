@@ -44,7 +44,7 @@ export function getAllPosts() {
 }
 
 export function getMarkdownTitles(slug: string) {
-  const post = getPostBySlug(slug)
+  const post = getPostBySlug(slug) // 获取文章
 
   const mdText = post.content;
   // 清除代码块

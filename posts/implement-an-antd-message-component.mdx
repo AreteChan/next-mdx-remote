@@ -1,7 +1,7 @@
 ---
-title: 复刻一个antd message组件
+title: 复刻一个 antd message 组件
 date: 2024-04-18T16:31:45+08:00
-description: 复刻一个antd message组件。Implement an antd message component.
+description: 复刻一个 antd message 组件。Implement an antd message component.
 keywords: [message, React, Next.js, CSS, useImperativeHandlen, transition, animation]
 ---
 
@@ -40,12 +40,12 @@ type MessageObj = {
 不妨思考一下实际使用场景：用户点击按钮，调用 `message.success` 方法，向 MessageWrapper 组件的 msgList 添加一个 msg ，然后渲染提示框。要实现这一需求，即要求**在组件外操作组件内的数据**，这可以通过 `useImperativeHandle` 和 `forwardRef` 配合实现。
 
 ## useImperativeHandle 实现组件外操作组件内的数据
-上面代码将 wrapperRef 传入 MessageWrapper，MessageWrapper 内使用了 useImperativeHandle 和 forwardRef ，wrapperRef.current 将是 useImperativeHandle 内回调函数返回的对象。
+上面代码将 `wrapperRef` 传入 `MessageWrapper`，`MessageWrapper` 内使用了 `useImperativeHandle` 和 `forwardRef` ，wrapperRef.current 将是 useImperativeHandle 内回调函数返回的对象。
 
-useImperativeHandle 回调函数返回一个对象，对象内定义了三个方法。
-- **add**：向 msgList 添加一个 msg，key 使用 Math.random() 生成，作为 msg 的标识。
-- **addFadeOut**：修改提示框样式的 transform 和 opacity 属性，触发 transition 动画，提示框向上移动并逐渐消失。
-- **remove**：移除 msgList 中第一个 msg。
+`useImperativeHandle` 回调函数返回一个对象，对象内定义了三个方法。
+- `add`：向 msgList 添加一个 msg，key 使用 `Math.random()` 生成，作为 msg 的标识。
+- `addFadeOut`：修改提示框样式的 `transform` 和 `opacity` 属性，触发 transition 动画，提示框向上移动并逐渐消失。
+- `remove`：移除 msgList 中第一个 msg。
 
 ```tsx
 // MessageWrapper组件的部分代码
@@ -136,7 +136,7 @@ message 提示框将显示3秒，动画流程大致如下：
 ## 总结
 - 在 Next.js 中，组件默认在服务端渲染，无法使用浏览器 API 如 window、document、localstorge 等。若想访问浏览器 API，需要 `'use client'` 指明客户端组件，并将访问浏览器 API 的代码放入如 `useEffect` 等仅客户端能调用的特定位置中。
 
-- **useImperativeHandle** 可以实现在组件外操作组件内的数据，如 setState、操作 Ref 等。
+- `useImperativeHandle` 可以实现在组件外操作组件内的数据，如 setState、操作 Ref 等。
 
-- **transition** 简写语法接受 4 个参数，分别为 transition-property、transition-duration、transition-timing-function 和 transition-delay。transition-property 指定哪些属性使用过渡。**transition-property 取值变化时会触发 transition 动画**。
+- `transition` 简写语法接受 4 个参数，分别为 transition-property、transition-duration、transition-timing-function 和 transition-delay。transition-property 指定哪些属性使用过渡。**transition-property 取值变化时会触发 transition 动画**。
 

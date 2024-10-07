@@ -10,7 +10,11 @@ function PostPage() {
         { posts.map((post: any) => (
           <div key={post.slug}>
             <time className="text-xl mr-8 ">
-              {post.meta.date.toLocaleDateString()}
+              {post.meta.date.toLocaleDateString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+              })}
             </time>
             <Link href={`/post/${post.slug}`}>
               <h1 className='inline-block text-3xl mt-4'>{post.meta.title}</h1>
