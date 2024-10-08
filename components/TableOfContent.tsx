@@ -25,26 +25,25 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ titles }) => {
     });
   }
 
-  useEffect(() => {
-    const observers: IntersectionObserver[] = [];
+  const observerOptions = {
+    rootMargin: '0px 0px -80% 0px',
+    threshold: [0, 1],
+  };
 
-    const observerOptions = {
-      rootMargin: '0px 0px -80% 0px',
-      threshold: [0, 1],
-    };
+  useEffect(() => {
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
 
     titles.forEach((title) => {
       const pureTitle = title.replace(/^#{1,3}\s/, '');
       const element = document.getElementById(pureTitle);
       if (element) {
-        const observer = new IntersectionObserver(observerCallback, observerOptions);
         observer.observe(element);
-        observers.push(observer);
       }
     });
 
     return () => {
-      observers.forEach((observer) => observer.disconnect());
+      observer.disconnect();
     };
   }, [titles]);
 

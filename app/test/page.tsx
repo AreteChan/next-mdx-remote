@@ -8,7 +8,6 @@ const TestPage = () => {
 
     const observer = new IntersectionObserver(
       (entries) => {
-        // console.log(document.documentElement.scrollTop)
         const isScrollDown = prevScollTop > document.documentElement.scrollTop
         const isScrollUp = !isScrollDown
         prevScollTop = document.documentElement.scrollTop

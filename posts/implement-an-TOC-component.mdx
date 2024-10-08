@@ -57,7 +57,7 @@ titles.map((title: string) => {
 })
 ```
 
-## IntersectionObserver 监听元素滚动
+## IntersectionObserver 详解
 `IntersectionObserver`（交叉观察器）可以监听目标元素对视口与根元素的相交状态，并执行相应操作。
 
 它是一个构造函数，接收两个参数 `callback` 和 `options`。
@@ -72,4 +72,65 @@ const observer = new IntersectionObserver(observerCallback, observerOptions);
 - 目标元素与设备视口或指定的根元素相交状态变化（不相交 -> 相交 or 相交 -> 不相交）；
 - 观察器（Observer）第一次监听观察目标元素。
 
-`callback` 接收一个 `entries: IntersectionObserverEntry[]` 参数
+`callback` 接收一个 `entries: IntersectionObserverEntry[]` 参数，`IntersectionObserverEntry` 是一个对象，有以下属性：
+- `boundingClientRect`：目标元素的边界信息
+- `rootBounds`：根元素的边界信息
+- `IntersectionRect`：目标元素和根元素的相交区域信息
+- `intersectionRatio`：相交区域占目标元素的比例
+- `isInterscting`：目标元素和根元素是否相交
+- `target`：目标元素 DOM
+- `time`：从 `IntersectionObserver` 的时间原点到交叉被触发的时间戳
+
+此外，`callback` 还可以接收第二个参数 `observer`，用于获取 `IntersectionObserver` 实例。
+
+### options 详解
+`option` 用于配置 `IntersectionObserver` 实例，它是一个对象，包括如下属性：
+- `root`：设置根元素 DOM
+- `rootMargin`：设置根元素的 margin，可影响交叉区域的大小
+- `threshold`：数组，成员取值范围为[0, 1]，设置 `IntersectionRect` 为多少时触发回调
+
+默认情况下，`root` 为文档视口，`rootMargin` 为 `0px`，`threshold` 为 `[0]`。
+
+### observer 实例方法
+创建 observer 实例后，通过实例方法绑定或解除目标元素：
+- `observe(element)` 绑定一个或多个目标元素；
+- `unobserve(element)` 终止对指定元素的观察；
+- `disconnect()` 终止对所有目标元素的观察。
+
+```TypeScript
+const targetElement1 = document.getElementById('target1')
+const targetElement2 = document.getElementById('target2')
+// 绑定目标元素
+observer.observe(targetElement1)
+observer.observe(targetElement2)
+// 终止观察指定元素
+observer.unobserve(targetElement1)
+// 终止观察所有元素
+observer.disconnect()
+```
+
+## 监听标题元素滚动行为
+
+先分析一通标题元素的位置变化与目录标题高亮的关系，假设标题从上到下一依次为 标题1 到 标题n，1 ≤ k ≤ n ：
+
+- 标题k向上移动到视口顶部，目录标题k高亮；
+- 标题k从视口顶部下移，目录标题k-1高亮。
+
+可见，确定哪个标题要高亮，关键在于标题的**移动方向**和**位置**。
+
+### 获取标题移动方向
+`Element.scrollTop` 属性可以获取或设置元素内容从其顶部边缘垂直滚动的像素数，通过比较滚动事件前后的 `scrollTop` 可以得出标题的移动方向。
+
+```TypeScript
+useEffect(() => {
+  let prevScollTop = document.documentElement.scrollTop
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      const isScrollDown = prevScollTop > document.documentElement.scrollTop
+      const isScrollUp = !isScrollDown
+      prevScollTop = document.documentElement.scrollTop
+    },
+  )
+}, [])
+```
