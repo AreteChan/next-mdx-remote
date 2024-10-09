@@ -24,7 +24,7 @@ const HomePage = () => {
         <section>
           <h2 className="text-2xl font-semibold mb-4">About Me</h2>
           <p className="text-muted-foreground">
-            Welcome to my personal blog! I'm passionate about sharing my thoughts and experiences on various topics.
+            Welcome to my personal blog! I&apos;m passionate about sharing my thoughts and experiences on various topics.
             Feel free to explore my recent posts and get in touch.
           </p>
           <Button className="mt-4" onClick={() => message.success('Thanks for visiting!')}>

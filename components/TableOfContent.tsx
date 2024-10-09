@@ -8,11 +8,11 @@ interface TableOfContentsProps {
 
 const TableOfContents: React.FC<TableOfContentsProps> = ({ titles }) => {
   const [activeId, setActiveId] = useState<string>('');
-  const pureTitles = titles.map((title) => title.replace(/^#{1,3}\s/, ''));
 
   useEffect(() => {
 
     let prevScollTop = document.documentElement.scrollTop
+    const pureTitles = titles.map((title) => title.replace(/^#{1,3}\s/, ''));
 
     const observer = new IntersectionObserver(
       (entries) => entries.forEach((entry) => {
