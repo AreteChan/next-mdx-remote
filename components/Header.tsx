@@ -34,9 +34,9 @@ function Header() {
           <Button variant="link">
             <Link href='/'>Home</Link>
           </Button>
-          <Button variant="link">
+          {/* <Button variant="link">
             <Link href='/blog'>Blog</Link>
-          </Button>
+          </Button> */}
           <Button variant="link">
             <Link href='/post'>Post</Link>
           </Button>
