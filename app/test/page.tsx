@@ -13,7 +13,12 @@ const TestPage = () => {
         prevScollTop = document.documentElement.scrollTop
         
         console.log(isScrollDown)
+        // 标题k向上移动到视口顶部，目录标题k高亮
+        
       },
+      {
+        threshold: [1]
+      }
     )
     observer.observe(document.getElementById('test') as Element)
 
