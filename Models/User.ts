@@ -1,15 +1,7 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose from "mongoose";
 import validator from "validator";
 
-interface User extends Document {
-  name: string;
-  email: string;
-  password: string;
-  role: "user" | "admin";
-  createdAt: number;
-}
-
-const userSchema: Schema<User> = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "A user must have a name."],
@@ -37,4 +29,6 @@ const userSchema: Schema<User> = new mongoose.Schema({
   },
 });
 
-export default mongoose.models.User || mongoose.model<User>("User", userSchema);
+const User = mongoose.models.User || mongoose.model("User", userSchema);
+
+export default User

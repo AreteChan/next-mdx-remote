@@ -3,9 +3,6 @@ import { connectDB } from '@/lib/utils'
 import User from '@/models/User'
 import { cookies } from "next/headers";
 
-import mongoose, { Schema, Document } from "mongoose";
-import validator from "validator";
-
 interface IUser {
   name: string;
   email: string;
