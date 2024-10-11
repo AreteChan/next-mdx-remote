@@ -1,6 +1,6 @@
-// "use server"
+"use server"
 import { connectDB } from '@/lib/utils'
-// import User from '@/models/User'
+import User from '@/models/User'
 import { cookies } from "next/headers";
 
 import mongoose, { Schema, Document } from "mongoose";
@@ -13,36 +13,6 @@ interface IUser {
   role: "user" | "admin";
   createdAt: number;
 }
-
-const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, "A user must have a name."],
-  },
-  email: {
-    type: String,
-    required: [true, "A user must have an email."],
-    unique: true,
-    lowercase: true,
-    validate: [validator.isEmail, "Please provide a valid email."]
-  },
-  password: {
-    type: String,
-    required: [true, "A user must have a password."],
-    select: false 
-  },
-  role: {
-    type: String,
-    default: "user",
-    enum: ["user", "admin"],
-  },
-  createdAt: {
-    type: Number,
-    default: Date.now(),
-  },
-});
-
-let User = mongoose.models.User || mongoose.model("User", userSchema)
 
 connectDB();
 
