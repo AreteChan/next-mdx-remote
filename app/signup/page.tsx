@@ -8,22 +8,22 @@ import { sriracha } from '@/app/font'
 
 const SignupPage = () => {
 
-  const signup = async (formdata: FormData) => {
-    try {
-      const { password, confirmPassword } = Object.fromEntries(formdata)
-      if (password !== confirmPassword) message.error('Passwords do not match!')
+  // const signup = async (formdata: FormData) => {
+  //   try {
+  //     const { password, confirmPassword } = Object.fromEntries(formdata)
+  //     if (password !== confirmPassword) message.error('Passwords do not match!')
       
-      const user = await createUser(formdata)  
-      message.success('Sign up successfully!')
-    } catch (error: any) {
-      message.error(`Sign up failed! ${error.message}`)
-    }
-  }
+  //     const user = await createUser(formdata)  
+  //     message.success('Sign up successfully!')
+  //   } catch (error: any) {
+  //     message.error(`Sign up failed! ${error.message}`)
+  //   }
+  // }
 
   return (
     <div className="container flex items-center flex-col pt-[7%] slide-enter-content">
       <h1 className={sriracha.className}>Sign up</h1>
-      <form action={signup} className='w-80 space-y-4'>
+      <form className='w-80 space-y-4'>
         <Input name="name" type="text" placeholder="Name" />
         <Input name="email"  placeholder="Email" />
         <Input name="password" type="password" placeholder="Password" />

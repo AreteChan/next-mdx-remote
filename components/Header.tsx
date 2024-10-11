@@ -40,9 +40,9 @@ function Header() {
           <Button variant="link">
             <Link href='/post'>Post</Link>
           </Button>
-          <Button variant="link">
+          {/* <Button variant="link">
             <Link href='/login'>Log in</Link>
-          </Button>
+          </Button> */}
         </div>
       </div>
     </header> 
