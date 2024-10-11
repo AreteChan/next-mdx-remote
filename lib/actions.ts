@@ -1,6 +1,6 @@
 "use server"
 import { connectDB } from '@/lib/utils'
-import User from '@/models/User'
+import User from './User'
 import { cookies } from "next/headers";
 
 interface IUser {
