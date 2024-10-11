@@ -6,7 +6,7 @@ import { cookies } from "next/headers";
 import mongoose, { Schema, Document } from "mongoose";
 import validator from "validator";
 
-interface IUser extends Document {
+interface IUser {
   name: string;
   email: string;
   password: string;
@@ -14,7 +14,7 @@ interface IUser extends Document {
   createdAt: number;
 }
 
-const userSchema: Schema<IUser> = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "A user must have a name."],
@@ -42,7 +42,7 @@ const userSchema: Schema<IUser> = new mongoose.Schema({
   },
 });
 
-let User = mongoose.models.User || mongoose.model<IUser>("User", userSchema)
+let User = mongoose.models.User || mongoose.model("User", userSchema)
 
 connectDB();
 
