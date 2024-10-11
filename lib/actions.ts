@@ -1,5 +1,5 @@
 "use server"
-import User from '../models/User'
+import User from '@/models/User'
 import { connectDB } from '@/lib/utils'
 import { cookies } from "next/headers";
 
