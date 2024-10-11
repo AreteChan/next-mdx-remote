@@ -1,6 +1,6 @@
-"use server"
-import User from '@/models/User'
+// "use server"
 import { connectDB } from '@/lib/utils'
+import User from '@/models/User'
 import { cookies } from "next/headers";
 
 connectDB();
