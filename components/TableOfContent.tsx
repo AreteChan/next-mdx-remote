@@ -68,13 +68,13 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ titles }) => {
     <div className="slide-enter-content space-y-2 fixed mt-16">
       {titles.map((title: string) => {
         const pureTitle = title.replace(/^#{1,3}\s/, '');
-        let className = "block text-slate-500 hover:text-cyan-900 dark:text-slate-400 dark:hover:text-slate-100 whitespace-nowrap ";
+        let className = "block text-slate-500 hover:text-cyan-700 dark:text-slate-400 dark:hover:text-slate-100 whitespace-nowrap ";
 
         if (title.startsWith("## ")) className += "ml-2 ";
         else if (title.startsWith("### ")) className += "ml-4 ";
 
         if (pureTitle === activeId) {
-          className += "font-bold text-cyan-700 dark:text-slate-200 ";
+          className += "font-bold !text-cyan-700 dark:!text-slate-100 ";
         }
 
         return (

@@ -127,8 +127,8 @@
 }
 /* inline code */
 .prose :where(:not(pre)>code):not(:where([class~="not-prose"] *)) {
-  @apply rounded bg-gray-200 dark:bg-gray-700 py-1 px-2 
-  before:content-none after:content-none text-red-600
+  @apply rounded bg-gray-200 dark:bg-gray-600 py-1 px-2 
+  before:content-none after:content-none text-red-600 dark:text-white
   font-medium 
 }
 
