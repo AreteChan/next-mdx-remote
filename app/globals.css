@@ -132,6 +132,18 @@
   font-medium 
 }
 
+.remark-code-container pre {
+  margin: 0.5rem 0 !important;
+}
+
+.remark-code-title {
+  @apply relative text-sm text-white font-medium mx-4 top-1
+}
+
+.remark-code-container {
+  @apply bg-slate-500 rounded-md;
+}
+
 /* width */
 ::-webkit-scrollbar {
   width: 10px;

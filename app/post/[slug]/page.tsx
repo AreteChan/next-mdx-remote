@@ -3,6 +3,7 @@ import { getPostBySlug, getAllPosts, getMarkdownTitles } from "@/lib/parse-posts
 import { Metadata } from "next";
 import remarkGfm from 'remark-gfm'
 import rehypeHighlight from 'rehype-highlight'
+import remarkCodeTitles from 'remark-flexible-code-titles'
 import ButtonDemo from '@/app/post-components/ButtonDemo';
 import TableOfContents from "@/components/TableOfContent";
 
@@ -42,7 +43,7 @@ export function generateMetadata( { params, searchParams }: Props) {
 // MDX 配置
 const options: MDXRemoteProps['options'] = {
   mdxOptions: {
-    remarkPlugins: [remarkGfm],
+    remarkPlugins: [remarkGfm, remarkCodeTitles as any],
     rehypePlugins: [rehypeHighlight as any],
   },
 };
