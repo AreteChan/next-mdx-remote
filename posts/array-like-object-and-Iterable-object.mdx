@@ -1,0 +1,87 @@
+---
+title: JavaScript 类数组对象和可迭代对象
+date: 2024-09-28T16:31:45+08:00
+description: 什么是 JavaScript 的类数组对象和可迭代对象。What are array-like objects and iterable objects in JavaScript.
+keywords: [JavaScript, array-like object, iterable object, 类数组对象, 可迭代对象]
+---
+
+来看看 `RegExp.exec()` 的返回值：
+
+```JavaScript
+let regex = /(?<year>\d{4})-(?<month>\d{2})-(\d{2})/;
+let string = "Date: 2023-05-15";
+
+console.log(regex.exec(string)); 
+// [
+//   '2023-05-15',
+//   '2023',
+//   '05',
+//   '15',
+//   index: 6,
+//   input: 'Date: 2023-05-15',
+//   groups: { year: '2023', month: '05' }
+//   length: 4
+//   [[Prototype]]: Array
+// ]
+```
+
+`RegExp.exec()` 返回的是一个类数组对象，原型为 `Array.prototype`，这个类数组对象拥有数组的属性和方法，还包含了一些额外的属性，如 `index`、`input` 和 `groups`。
+
+但并非所有的类数组对象都是如此，下面这个对象也是一个类数组对象，它的原型是 `Object.prototype`，并不具备数组的属性和方法。
+
+```JavaScript
+let arrayLike = {
+  0: 'a',
+  1: 'b',
+  2: 'c',
+  length: 3
+};
+```
+
+定义上，**类数组对象是具有索引和 length 属性的对象**，仅此而已。要想将类数组对象转换为真正的数组，可以使用 `Array.from` 方法。
+
+```JavaScript
+let arr = Array.from(arrayLike); // ['a', 'b', 'c']
+```
+
+`Array.from` 方法接受一个类数组对象或可迭代对象，并返回一个根据该对象生成的数组。那什么是可迭代对象呢？
+
+定义上，可迭代对象是实现了 `Symbol.iterator` 方法的对象，可在 `for..of` 循环中使用。数组是可迭代对象，字符串也是可迭代对象。
+
+```JavaScript
+// 这是一个可迭代对象，符合可迭代协议
+let Iterable = {
+  from: 1,
+  to: 5
+
+  // 一个无参数的函数，其返回值为一个符合迭代器协议的对象
+  [Symbol.iterator]() {
+    this.current = this.from;
+    return this; 
+  },
+
+  next() {
+    if (this.current <= this.to) {
+      return { done: false, value: this.current++ };
+    } else {
+      return { done: true };
+    }
+  }
+};
+
+for (let num of Iterable) {
+  console.log(num); // 1, 2, 3, 4, 5
+}
+```
+
+这里提到两个协议，**可迭代协议**和**迭代器协议**：
+- 符合**可迭代协议**的对象被称为**可迭代对象**，该对象必须实现 `[Symbol.iterator]()` 方法；
+- `[Symbol.iterator]()` ：一个无参数的函数，其返回值为一个符合**迭代器协议**的对象；
+- **迭代器协议**定义了产生一系列值的标准方式。迭代器必须实现 `next()` 方法，返回符合 `IteratorResult` 接口的对象；
+- 
+
+`for...of` 循环按顺序逐个处理从可迭代对象获取的值，循环对值的每次操作被称为一次迭代，迭代过程如下：
+
+1. 调用可迭代对象的 `[Symbol.iterator]()` 方法；
+2. 使用 `[Symbol.iterator]()` 方法返回的迭代器获得要迭代的值。
+

@@ -75,10 +75,12 @@ console.log(regex.exec(string));
 //   '15',
 //   index: 6,
 //   input: 'Date: 2023-05-15',
-//   groups: [Object: null prototype] { year: '2023', month: '05' }
+//   groups: { year: '2023', month: '05' }
+//   length: 4
+//   [[Prototype]]: Array
 // ]
 ```
-若在上述示例中执行 `string.match(re)`，会发现得到的结果和 `regex.exec(string)` 是一致的。
+若在上述示例中执行 `string.match(regex)`，会发现得到的结果和 `regex.exec(string)` 是一致的。
 ```JavaScript
 console.log(string.match(regex)); 
 // [
@@ -88,7 +90,7 @@ console.log(string.match(regex));
 //   '15',
 //   index: 6,
 //   input: 'Date: 2023-05-15',
-//   groups: [Object: null prototype] { year: '2023', month: '05' }
+//   groups: { year: '2023', month: '05' }
 // ]
 ```
 实际上，`string.match(re)` 会根据正则表达式中是否有全局标志 `g` 而返回不同的结果：
