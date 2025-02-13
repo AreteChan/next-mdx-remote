@@ -23,7 +23,7 @@ const HomePage = () => {
         </section>
       </main>
       <footer className="fixed bottom-8 py-4 bg-background text-center text-muted-foreground">
-        <p>&copy; 2024 My Personal Blog. All Rights Reserved.</p>
+        <p>&copy; 2025 My Personal Blog. All Rights Reserved.</p>
       </footer>
     </div>
   );

@@ -67,11 +67,11 @@ export default function Post({ params }: Props) {
 
   return (
     <div className="container mt-4 flex">
-      <div id="post" className="prose prose-slate dark:prose-invert slide-enter-content ml-32 mr-8 ">
+      <article id="post" className="prose prose-slate dark:prose-invert slide-enter-content ml-32 mr-8 ">
         <h1 className="mb-4 !max-w-none whitespace-nowrap">{post.meta.title}</h1>
         <div className="text-gray-400 mb-4">{post.meta.date.toLocaleString()}</div> 
         <MDXRemote source={post.content} options={options} components={components} />
-      </div >
+      </article>
       <div id="menu">
         {isTitlesShow && <TableOfContents titles={titles} />}
       </div>

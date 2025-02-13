@@ -30,7 +30,7 @@ function Header() {
         <Button variant="link" size='icon' onClick={toggleDark}>
           {theme === 'light' ? <SunDim size={24} /> : <MoonStars size={24} />}
         </Button>
-        <div>
+        <nav>
           <Button variant="link">
             <Link href='/'>Home</Link>
           </Button>
@@ -43,7 +43,7 @@ function Header() {
           {/* <Button variant="link">
             <Link href='/login'>Log in</Link>
           </Button> */}
-        </div>
+        </nav>
       </div>
     </header> 
   )
