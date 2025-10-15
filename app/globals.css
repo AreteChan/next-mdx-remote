@@ -115,7 +115,7 @@
 
 @layer utilities {
   .flex-center {
-    @apply flex items-center justify-center;
+    @apply flex place-items-center;
   }
   .anima-in > * {
     @apply animate-in slide-in-from-bottom-10 fade-in duration-700 

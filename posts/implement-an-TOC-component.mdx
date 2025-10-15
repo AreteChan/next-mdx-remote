@@ -16,7 +16,7 @@ keywords: [React, Next.js, useEffect, IntersectionObserver]
 ## 提取 Markdown 标题
 为避免代码块干扰，先使用正则表达式去除代码块，再匹配 Markdown 标题。
 
-匹配 Markdown 标题的正则表达式使用 `/m` 多行匹配，会将开始和结束字符 (`^`and `$`) 视为在多行上工作，从而正确识别出某行开头的 `#` 字符。
+匹配 Markdown 标题的正则表达式使用 `/m` 多行匹配，会将开始和结束字符 ( `^` and `$` ) 视为在多行上工作，从而正确识别出某行开头的 `#` 字符。
 
 ```TypeScript
 export function getMarkdownTitles(slug: string) {
